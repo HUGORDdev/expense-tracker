@@ -1,0 +1,21 @@
+CREATE TABLE IF NOT EXISTS users(
+    id TEXT PRIMARY KEY,
+    userName TEXT UNIQUE NOT NULL,
+    email TEXT NOTNULL,
+    password TEXT NOT NULL,
+    create_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    solde FLOAT DEFAULT 0
+    -- TEL INT
+);
+
+
+CREATE TABLE IF NOT EXISTS expense(
+    id TEXT PRIMARY KEY,
+    title TEXT NOT NULL,
+    amout FLOAT NOT NULL,
+    category TEXT NOT NULL,
+    date TEXT NOT NULL,
+    create_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+

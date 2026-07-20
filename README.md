@@ -4,6 +4,7 @@ Ce projet est une application full-stack de suivi des dépenses personnelles ave
 
 Le cahier des charges et la logique métier de l'API sont issus de la roadmap backend de [roadmap.sh](https://roadmap.sh/projects/expense-tracker-api) (*Projets Backend - Niveau : Facile*).
 
+![Project Screenshot](demo.png)
 ## Présentation du projet
 
 L'objectif principal de ce projet est de concevoir et déployer une API REST robuste couplée à une interface moderne pour la gestion des finances personnelles. L'application permet à chaque utilisateur de s'inscrire, de se connecter en toute sécurité et de gérer son budget au quotidien.

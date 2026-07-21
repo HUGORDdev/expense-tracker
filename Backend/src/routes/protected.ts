@@ -106,7 +106,6 @@ export const getExpenses = withAuth(
 //     async (request:AuthenticatedRequest):Promise<Response> =>{
 //         const user = request.user!
 //         db.query("INSERT INTO ")
-
 //     }
 // )
 
@@ -114,26 +113,25 @@ export const addExpenses = withAuth(
   async (request: AuthenticatedRequest, res: Response) => {
     const user = request.user!;
     try {
-      const { start, end } = request.body;
-      const dateFilter: { gte?: string; lte?: string } = {};
-      if (start) dateFilter.gte = new Date(start as string).toISOString();
-      if (end) dateFilter.lte = new Date(end as string).toISOString();
-      const expenses = await prisma.expenses.findMany({
-        where: {
-          user_id: user.sub,
-          date: dateFilter,
-        },
-        orderBy: {
-          date: "desc",
-        },
+      const {title,amount,category,date } = request.body;
+      
+      const expense = await prisma.expenses.create({
+        data:{
+          id:crypto.randomUUID(),
+          title:title,
+          amount:amount,
+          category:category,
+          date:date,
+          user_id:user.sub
+        }
       });
-      return res.status(200).json({
-        expenses,
-        total: expenses.length,
-      });
+      // console.log('Élément ajouté :', expense)
+
+      return res.status(201).json(expense);
     } catch (error) {
       console.log("voici l'erreur rencontrer pour avoir l'acces  ", error);
       return res.status(500).json({ message: "Erreur serveur" });
     }
   },
 );
+

@@ -60,16 +60,12 @@ export function resolvePeriodRange(filter: PeriodFilter): { start: string; end: 
 
 export async function getExpenses(filter: PeriodFilter): Promise<ExpensesResponse> {
   // --- MOCK (à supprimer une fois l'API branchée) ---
+  
   const { start, end } = resolvePeriodRange(filter);
-  const filtered = mockExpenses
-    .filter((e) => e.date >= start && e.date <= end)
-    .sort((a, b) => (a.date < b.date ? 1 : -1));
-  return fakeDelay({ expenses: filtered, total: filtered.length });
+  return apiFetch<ExpensesResponse>(`/expenses?start=${start}&end=${end}`);
 
   // --- APPEL RÉEL ---
   // TODO: Connecter à l'API Express/Bun (GET /api/expenses?start=...&end=...)
-  // const { start, end } = resolvePeriodRange(filter);
-  // return apiFetch<ExpensesResponse>(`/expenses?start=${start}&end=${end}`);
 }
 
 export async function createExpense(data: ExpenseInput): Promise<Expense> {

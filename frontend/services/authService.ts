@@ -66,9 +66,9 @@ export async function fetchCurrentUser(): Promise<User> {
 
 export async function logout(): Promise<void> {
   // --- MOCK : rien à faire côté serveur ---
-  return fakeDelay(undefined, 100);
+  // return fakeDelay(undefined, 100);
 
   // --- APPEL RÉEL (si votre API invalide le token côté serveur) ---
   // TODO: Connecter à l'API Express/Bun (POST /api/auth/logout)
-  // return apiFetch<void>("/auth/logout", { method: "POST" });
+  return apiFetch<void>("/auth/logout", { method: "POST" });
 }

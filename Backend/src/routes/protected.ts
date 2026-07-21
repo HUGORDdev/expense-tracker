@@ -5,10 +5,11 @@ import type { Response } from "express";
 import db from "../config/db";
 import { withAuth, type AuthenticatedRequest } from "../middleware/auth";
 import type { Expense } from "../types/expense";
+import { prisma } from "../../prisma/db";
 
 // const { start, end } = resolvePeriodRange(filter);
-  
-  // return fakeDelay({ expenses: filtered, total: filtered.length });
+
+// return fakeDelay({ expenses: filtered, total: filtered.length });
 // Helper for JSON responses
 // function json(data: object, status: number = 200): Response {
 //   return new Response(JSON.stringify(data), {
@@ -19,7 +20,7 @@ import type { Expense } from "../types/expense";
 
 // GET /api/profile - Get current user profile
 export const getProfile = withAuth(
-  async (request: AuthenticatedRequest,res:Response): Promise<Response> => {
+  async (request: AuthenticatedRequest, res: Response): Promise<Response> => {
     // User info is available from the validated token
     const user = request.user!;
 
@@ -29,13 +30,12 @@ export const getProfile = withAuth(
       tokenIssuedAt: user.iat,
       tokenExpiresAt: user.exp,
     });
-  }
+  },
 );
-
 
 // GET /api/dashboard - Protected dashboard data
 export const getDashboard = withAuth(
-    async (request: AuthenticatedRequest,res:Response): Promise<Response> => {
+  async (request: AuthenticatedRequest, res: Response): Promise<Response> => {
     const user = request.user!;
 
     // Fetch user-specific data (example)
@@ -48,12 +48,12 @@ export const getDashboard = withAuth(
     };
 
     return res.json(dashboardData);
-  }
+  },
 );
 
 // POST /api/settings - Update user settings
 export const updateSettings = withAuth(
-  async (request: AuthenticatedRequest,res:Response) => {
+  async (request: AuthenticatedRequest, res: Response) => {
     const user = request.user!;
 
     try {
@@ -69,30 +69,71 @@ export const updateSettings = withAuth(
     } catch (error) {
       return res.status(400).json({ error: "Invalid request body" });
     }
-  }
+  },
 );
 
 export const getExpenses = withAuth(
-  async (request:AuthenticatedRequest,res:Response)=>{
+  async (request: AuthenticatedRequest, res: Response) => {
     const user = request.user!;
-    try{
-      const { start, end } = request.body
-      const mockExpenses:Expense[] = db.query(`SELECT * FROM expenses WHERE user_id = ${user.sub}`).all()
-
-      const filtered = mockExpenses
-    .filter((e) => e.date >= start && e.date <= end)
-    .sort((a, b) => (a.date < b.date ? 1 : -1));
-    }catch(error){
-      // return json
+    try {
+      const { start, end } = request.query;
+      const dateFilter: { gte?: string; lte?: string } = {};
+      if (start) dateFilter.gte = new Date(start as string).toISOString();
+      if (end) dateFilter.lte = new Date(end as string).toISOString();
+      const expenses = await prisma.expenses.findMany({
+        where: {
+          user_id: user.sub,
+          date: dateFilter,
+        },
+        orderBy: {
+          date: "desc",
+        },
+      });
+      return res.status(200).json({
+        expenses,
+        total: expenses.length,
+      });
+    } catch (error) {
+      console.log("voici l'erreur rencontrer pour avoir l'acces  ", error);
+      return res.status(500).json({ message: "Erreur serveur" });
     }
-  }
-)
+  },
+);
+
 //POST api/expenses
 
 // export const addExpenses = withAuth(
 //     async (request:AuthenticatedRequest):Promise<Response> =>{
 //         const user = request.user!
 //         db.query("INSERT INTO ")
-        
+
 //     }
 // )
+
+export const addExpenses = withAuth(
+  async (request: AuthenticatedRequest, res: Response) => {
+    const user = request.user!;
+    try {
+      const { start, end } = request.body;
+      const dateFilter: { gte?: string; lte?: string } = {};
+      if (start) dateFilter.gte = new Date(start as string).toISOString();
+      if (end) dateFilter.lte = new Date(end as string).toISOString();
+      const expenses = await prisma.expenses.findMany({
+        where: {
+          user_id: user.sub,
+          date: dateFilter,
+        },
+        orderBy: {
+          date: "desc",
+        },
+      });
+      return res.status(200).json({
+        expenses,
+        total: expenses.length,
+      });
+    } catch (error) {
+      console.log("voici l'erreur rencontrer pour avoir l'acces  ", error);
+      return res.status(500).json({ message: "Erreur serveur" });
+    }
+  },
+);

@@ -10,7 +10,7 @@ import {
   logoutAll,
   sessions,
 } from "./src/routes/auth";
-import { getProfile, getDashboard, updateSettings } from "./src/routes/protected";
+import { getProfile, getDashboard, updateSettings, getExpenses } from "./src/routes/protected";
 import { cleanupExpiredTokens } from "./src/utils/tokenStore";
 import { innitDB } from "./src/config/db";
 
@@ -34,6 +34,7 @@ app.get("/auth/sessions", sessions);
 app.get("/api/profile", getProfile);
 app.get("/api/dashboard", getDashboard);
 app.post("/api/settings", updateSettings);
+app.get("/api/expenses",getExpenses)
 
     // --- Routes des depenses  ---
     // GET /api/expenses?start=...&end=...

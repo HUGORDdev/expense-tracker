@@ -119,9 +119,9 @@ export async function login(req: Request,res:Response): Promise<Response> {
 
     return res.json({
       accessToken,
-      refreshToken,
-      tokenType: "Bearer",
-      expiresIn: 900, // 15 minutes in seconds
+      // refreshToken,
+      // tokenType: "Bearer",
+      // expiresIn: 900, // 15 minutes in seconds
       user: {
         id: user.id,
         name: user.userName,

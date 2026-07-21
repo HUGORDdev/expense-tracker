@@ -15,7 +15,7 @@ export const TOKEN_COOKIE_KEY = "expense_tracker_token";
 
 // TODO: Remplacer par l'URL réelle de votre API Express/Bun (ex: http://localhost:3001)
 export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/";
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 export class ApiError extends Error {
   status: number;
@@ -74,6 +74,7 @@ export async function apiFetch<T>(
 
   if (auth) {
     const token = getToken();
+    console.log("voici le token d'authentifications ")
     if (token) {
       (finalHeaders as Record<string, string>)["Authorization"] =
         `Bearer ${token}`;

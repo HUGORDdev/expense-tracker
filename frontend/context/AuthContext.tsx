@@ -54,8 +54,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = useCallback(
     async (credentials: AuthCredentials) => {
-      const { token, user: loggedInUser } = await loginService(credentials);
-      persistSession(token, loggedInUser);
+      const { accessToken, user: loggedInUser } = await loginService(credentials);
+      persistSession(accessToken, loggedInUser);
       router.push("/dashboard");
     },
     [persistSession, router]
@@ -63,8 +63,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const register = useCallback(
     async (payload: RegisterPayload) => {
-      const { token, user: newUser } = await registerService(payload);
-      persistSession(token, newUser);
+      const { accessToken, user: newUser } = await registerService(payload);
+      persistSession(accessToken, newUser);
       router.push("/dashboard");
     },
     [persistSession, router]

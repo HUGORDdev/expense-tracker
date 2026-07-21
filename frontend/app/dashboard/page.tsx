@@ -28,6 +28,7 @@ export default function DashboardPage() {
     setErrorMessage(null);
     try {
       const { expenses: data } = await getExpenses(filter);
+      
       setExpenses(data);
     } catch (err) {
       setErrorMessage("Impossible de charger les dépenses. Veuillez réessayer.");

@@ -62,7 +62,7 @@ export async function getExpenses(filter: PeriodFilter): Promise<ExpensesRespons
   // --- MOCK (à supprimer une fois l'API branchée) ---
   
   const { start, end } = resolvePeriodRange(filter);
-  return apiFetch<ExpensesResponse>(`/expenses?start=${start}&end=${end}`);
+  return apiFetch<ExpensesResponse>(`/api/expenses?start=${start}&end=${end}`);
 
   // --- APPEL RÉEL ---
   // TODO: Connecter à l'API Express/Bun (GET /api/expenses?start=...&end=...)

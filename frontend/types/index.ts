@@ -66,7 +66,7 @@ export interface RegisterPayload {
 
 export interface AuthResponse {
   user: User;
-  token: string;
+  accessToken: string;
 }
 
 // Réponse générique paginée / enrichie pour la liste de dépenses

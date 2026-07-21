@@ -10,7 +10,7 @@ import {
   logoutAll,
   sessions,
 } from "./src/routes/auth";
-import { getProfile, getDashboard, updateSettings, getExpenses } from "./src/routes/protected";
+import { getProfile, getDashboard, updateSettings, getExpenses, addExpenses, updateExpenses } from "./src/routes/protected";
 import { cleanupExpiredTokens } from "./src/utils/tokenStore";
 import { innitDB } from "./src/config/db";
 
@@ -28,6 +28,7 @@ app.post("/auth/refresh", refresh);
 app.post("/auth/logout", logout);
 app.post("/auth/logout-all", logoutAll);
 app.get("/auth/sessions", sessions);
+app.put("/api/expenses/:id",updateExpenses)
 
 
 // --- Routes Protégées ---
@@ -35,6 +36,8 @@ app.get("/api/profile", getProfile);
 app.get("/api/dashboard", getDashboard);
 app.post("/api/settings", updateSettings);
 app.get("/api/expenses",getExpenses)
+app.post("/api/expenses",addExpenses)
+
 
     // --- Routes des depenses  ---
     // GET /api/expenses?start=...&end=...

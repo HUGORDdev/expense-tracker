@@ -60,34 +60,22 @@ export function resolvePeriodRange(filter: PeriodFilter): { start: string; end: 
 
 export async function getExpenses(filter: PeriodFilter): Promise<ExpensesResponse> {
   // --- MOCK (à supprimer une fois l'API branchée) ---
-  
   const { start, end } = resolvePeriodRange(filter);
   return apiFetch<ExpensesResponse>(`/api/expenses?start=${start}&end=${end}`);
-
   // --- APPEL RÉEL ---
   // TODO: Connecter à l'API Express/Bun (GET /api/expenses?start=...&end=...)
 }
 
 export async function createExpense(data: ExpenseInput): Promise<Expense> {
-  // --- MOCK ---
-  const newExpense: Expense = { id: crypto.randomUUID(), ...data };
-  mockExpenses = [newExpense, ...mockExpenses];
-  return fakeDelay(newExpense);
-
   // --- APPEL RÉEL ---
   // TODO: Connecter à l'API Express/Bun (POST /api/expenses)
-  // return apiFetch<Expense>("/expenses", { method: "POST", body: JSON.stringify(data) });
+  return apiFetch<Expense>("/api/expenses", { method: "POST", body: JSON.stringify(data) });
 }
 
 export async function updateExpense(id: string, data: ExpenseInput): Promise<Expense> {
-  // --- MOCK ---
-  mockExpenses = mockExpenses.map((e) => (e.id === id ? { ...e, ...data } : e));
-  const updated = mockExpenses.find((e) => e.id === id)!;
-  return fakeDelay(updated);
-
   // --- APPEL RÉEL ---
   // TODO: Connecter à l'API Express/Bun (PUT /api/expenses/:id)
-  // return apiFetch<Expense>(`/expenses/${id}`, { method: "PUT", body: JSON.stringify(data) });
+  return apiFetch<Expense>(`/api/expenses/${id}`, { method: "PUT", body: JSON.stringify(data) });
 }
 
 export async function deleteExpense(id: string): Promise<void> {

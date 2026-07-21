@@ -18,9 +18,8 @@ const app = express();
 
 innitDB()
 
-// Middlewares indispensables
 app.use(cors());
-app.use(express.json()); // Remplace le besoin de parser manuellement les requêtes JSON !
+app.use(express.json()); // PARSAGE DE reqeteJSON !
 
 // --- Routes d'Authentification ---
 app.post("/auth/register", register);
@@ -30,11 +29,17 @@ app.post("/auth/logout", logout);
 app.post("/auth/logout-all", logoutAll);
 app.get("/auth/sessions", sessions);
 
+
 // --- Routes Protégées ---
 app.get("/api/profile", getProfile);
 app.get("/api/dashboard", getDashboard);
 app.post("/api/settings", updateSettings);
 
+    // --- Routes des depenses  ---
+    // GET /api/expenses?start=...&end=...
+    // POST /api/expenses
+    // apiFetch<Expense>(`/expenses/${id}`, { method: "PUT", body: JSON.stringify(data) });
+    // delete apui (DELETE /api/expenses/:id)
 // --- Health Check ---
 app.get("/health", (req, res) => {
   res.json({ status: "healthy", timestamp: new Date().toISOString() });
@@ -45,7 +50,6 @@ app.use((req, res) => {
   res.status(404).json({ error: "Not found" });
 });
 
-// Démarrage du serveur via Express (Bun l'exécute en tâche de fond)
 app.listen(config.port, () => {
   console.log(`Express server running on http://localhost:${config.port}`);
 });

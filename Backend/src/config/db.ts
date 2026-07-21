@@ -29,7 +29,7 @@ export const innitDB = () => {
     `);
 
   db.run(`
-    CREATE TABLE IF NOT EXISTS expense(
+    CREATE TABLE IF NOT EXISTS expenses(
     id TEXT PRIMARY KEY,
     title TEXT NOT NULL,
     amout FLOAT NOT NULL,

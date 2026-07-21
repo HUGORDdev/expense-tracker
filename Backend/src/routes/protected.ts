@@ -135,3 +135,31 @@ export const addExpenses = withAuth(
   },
 );
 
+export const updateExpenses = withAuth(
+  async (request: AuthenticatedRequest, res: Response) => {
+    const user = request.user!;
+    try {
+      const {id} = request.params
+      const {title,amount,category,date } = request.body;
+      
+      const expense = await prisma.expenses.update({
+        where:{
+          id:id?.toString(),
+          // user_id: user.sub
+        },
+        data:{
+          title:title,
+          amount:amount,
+          category:category,
+          date:date,
+        },
+      });
+      // console.log('Élément ajouté :', expense)
+
+      return res.status(201).json(expense);
+    } catch (error) {
+      console.log("voici l'erreur rencontrer pour avoir l'acces  ", error);
+      return res.status(500).json({ message: "Erreur serveur" });
+    }
+  },
+);
